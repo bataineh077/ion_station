@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:cached_video_player/cached_video_player.dart';
-import 'package:carousel_slider/carousel_controller.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:infinite_carousel/infinite_carousel.dart';
+import 'package:ion_station/splash_controller.dart';
 
 
-String src0 = "https://res.cloudinary.com/sosransom/video/upload/v1665714407/Deer_-_133888_qobk2j.mp4";
+String src0 = "https://static.videezy.com/system/resources/previews/000/037/795/original/DH064.mp4";
 String src1 =
     'https://res.cloudinary.com/sosransom/video/upload/v1665714407/Hiking_-_109277_pcumou.mp4';
 
@@ -25,120 +25,94 @@ List<String> images = ['https://images.unsplash.com/photo-1665586072574-56b4dd11
 class HomeController extends GetxController{
 
 
-  List<String> src = [src0,src1,...images,src2,src3, ];
-
-  List<CachedVideoPlayerController> vcs = [];
 
 
-  CarouselController pageController = CarouselController();
+
+
+
+  InfiniteScrollController pageController = InfiniteScrollController();
 
   RxInt currentPageIndex = 0.obs;
 
-  Rx<Duration> duration = Duration.zero.obs;
-
-
-  int j = 0;
- Future initVidController()async{
-  //  print(src);
-    for (int i = 0; i < src.length; i++) {
-
-      if(src[i].contains(".mp4")){
+  RxBool duration = false.obs;
 
 
 
-
-          vcs.add(
-              CachedVideoPlayerController.network(
-                  src[i]));
+   SplashController controller = Get.put(SplashController());
 
 
 
-          content.add(CachedVideoPlayer(vcs[j],));
+  int ii = 1;
 
-          await vcs[j].initialize().then((value) {
-            // isInit.value = true;
-            print(src[i]);
-          });
-
-
-          j++;
-
-
-      }else{
-
-        content.add(Image.network(src[i]));
-      }
+late  VoidCallback _listener;
 
 
 
-
-
-    }
-
-    // vcs.last.addListener(() {
-    //   isInit.value = vcs.last.value.isInitialized;
-    // });
-    //
-    // vcs.last.removeListener(() { });
-  print(vcs.length);
-
-  }
-
-
-
-
-  // int goNext() {
-  //   // TODO: implement goNext
-  //   int nextIndex = ++currentPageIndex.value  ;
-  //
-  //   if(nextIndex == src.length){
-  //     nextIndex = 0;
-  //    // currentPageIndex.value = 0;
-  //   }
-  //
-  //   return nextIndex;
-  // }
-
-  RxInt ii = 1.obs;
-
-  void onPageChanged(int index,CarouselPageChangedReason c ) {
+  void onPageChanged(int index, ) {
     // TODO: implement onPageChanged
 
 
     //   duration.value = vcs[index].value.duration;
     currentPageIndex.value = index;
+
+
     print("currentPageIndex = ${currentPageIndex.value}" );
 
-    if(src[currentPageIndex.value].contains(".mp4")){
+    if(controller.src[currentPageIndex.value].contains(".mp4")){
 
-      if(ii.value == vcs.length){
-        ii.value = 0;
+      if(ii == controller.vcs.length){
+        ii = 0;
 
       }
 
-      var vController =vcs[ii.value];
+      var vController =controller.vcs[ii];
 
 
 
 
-        ii.value++;
+      _listener = () {
+        print("position = ${ vController.videoPlayerValue!.position} ;;; duration = ${vController.videoPlayerValue!.duration}");
 
-        print("ii = "+"${ii.value}");
+        if (vController.isInitialised) {
 
+
+            Duration duration = vController.videoPlayerValue!.duration;
+            Duration position = vController.videoPlayerValue!.position;
+
+
+            if (duration.compareTo(position) != 1 ) {
+              pageController.nextItem( duration: const Duration(milliseconds: 2000),
+                  curve: Curves.fastOutSlowIn);
+              vController.removeListener(_listener);
+            }else{
+
+              print("ali");
+            }
+
+
+
+        }
+      };
+
+
+      ii++;
+
+    //  print();
+      if(vController.videoState.name == "paused"){
+        vController.mute();
         vController.play();
+      }
 
-        vController.addListener(() {
-
-          if(!vController.value.isPlaying){
+      vController.addListener(_listener);
 
 
-            pageController.nextPage( duration: const Duration(milliseconds: 300),
-                curve: Curves.fastOutSlowIn);
 
-          }
-        });
 
-  //  vController.removeListener(() { });
+      print("ii = "+"${ii}");
+
+
+
+
 
 
 
@@ -148,8 +122,8 @@ class HomeController extends GetxController{
 
     }else{
 
-      Future.delayed(Duration(seconds: 5)).then((value) =>
-      pageController.nextPage( duration: const Duration(milliseconds: 300),
+      Future.delayed(Duration(seconds: 6)).then((value) =>
+      pageController.nextItem( duration: const Duration(milliseconds: 2000),
           curve: Curves.fastOutSlowIn));
     }
 
@@ -159,58 +133,58 @@ class HomeController extends GetxController{
 
   RxBool isInit = false.obs;
 
+  Timer? timer ;
+
+  _startDelay()async{
+
+    try{
+
+      if(controller.src[currentPageIndex.value].contains(".mp4")) {
+
+
+        controller.vcs[0].mute();
+        controller.vcs[0].play();
+
+
+        timer = Timer(controller.vcs[0].totalVideoLength ,(){  pageController.nextItem( duration: const Duration(milliseconds: 300),
+            curve: Curves.fastOutSlowIn);} );
+
+      }else{
+
+        ii= 0;
+
+        Future.delayed(Duration(seconds: 6)).then((value) =>
+            pageController.nextItem( duration: const Duration(milliseconds: 2000),
+                curve: Curves.fastOutSlowIn));
+
+
+      }
+
+
+    }catch(e){
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+
+
+  }
+
+
 @override
   void onReady() {
     // TODO: implement onReady
-    super.onReady();
     print("ready");
 
+    super.onReady();
 
-    //
-    // pageController.onReady.then((value) => null);
-    //
-
-  //  vcs[0].removeListener(() { });
+    _startDelay();
 
   }
 
-  List<Widget> content = [];
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-   print("init");
-
-    initVidController();
-
-    vcs[0].addListener(() {
-
-      print(vcs[0].value.isBuffering);
-      if(vcs[0].value.isInitialized ) {
-
-          isInit.value = true;
-          vcs[0].play();
-
-      }
-
-      if (!vcs[0].value.isPlaying) {
-        pageController.nextPage(duration: const Duration(milliseconds: 300),
-            curve: Curves.bounceInOut);
-      }
-    });
-
-
-    // src.forEach((element) {
-    //   if(element.contains(".mp4")){
-    //     content.add(  CachedVideoPlayer(vcs[],),);
-    //   }
-    // });
 
 
 
-
-  }
 
 
 
