@@ -25,7 +25,7 @@ class SplashApi extends GetConnect{
   }
 
   Future<List<dynamic>> getVideoList() async {
-    final response =  await  get('http://localhost:8080/getResource',
+    final response =  await  get('https://public-recycle-server.vercel.app/getResource',
 
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
