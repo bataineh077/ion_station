@@ -2,7 +2,7 @@ name: ios-station
 
 on:
   push:
-    branches: [ master ]
+    branches: [ github_Pages ]
 
 jobs:
   build:
