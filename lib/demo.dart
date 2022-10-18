@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:opscroll_web/opscroll_web.dart';
-// import 'package:video_box/video.controller.dart';
+// import 'package:video_box/video.home_controller.dart';
 // import 'package:video_box/video_box.dart';
 // import 'package:video_player/video_player.dart';
 //

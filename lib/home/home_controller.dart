@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
-import 'package:ion_station/splash_controller.dart';
+import '/splash/splash_controller.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 
 String src0 = "https://static.videezy.com/system/resources/previews/000/037/795/original/DH064.mp4";
@@ -71,13 +73,13 @@ late  VoidCallback _listener;
 
 
       _listener = () {
-        print("position = ${ vController.videoPlayerValue!.position} ;;; duration = ${vController.videoPlayerValue!.duration}");
+        print("position = ${ vController.value.position} ;;; duration = ${vController.value.duration}");
 
-        if (vController.isInitialised) {
+        if (vController.value.isInitialized) {
 
 
-            Duration duration = vController.videoPlayerValue!.duration;
-            Duration position = vController.videoPlayerValue!.position;
+            Duration duration = vController.value.duration;
+            Duration position = vController.value.position;
 
 
             if (duration.compareTo(position) != 1 ) {
@@ -98,10 +100,9 @@ late  VoidCallback _listener;
       ii++;
 
     //  print();
-      if(vController.videoState.name == "paused"){
-        vController.mute();
+        vController.setVolume(0.0);
         vController.play();
-      }
+
 
       vController.addListener(_listener);
 
@@ -137,16 +138,19 @@ late  VoidCallback _listener;
 
   _startDelay()async{
 
-    try{
 
+    try{
+      // Future.delayed(Duration(seconds: 6)).then((value) =>
+      //     pageController.nextItem( duration: const Duration(milliseconds: 2000),
+      //         curve: Curves.fastOutSlowIn));
+      if( numOfElement>0)
       if(controller.src[currentPageIndex.value].contains(".mp4")) {
 
+        vrc[0].setVolume(0.0);
+        vrc[0].play();
 
-        controller.vcs[0].mute();
-        controller.vcs[0].play();
 
-
-        timer = Timer(controller.vcs[0].totalVideoLength ,(){  pageController.nextItem( duration: const Duration(milliseconds: 300),
+        timer = Timer(vrc[0].value.duration ,(){  pageController.nextItem( duration: const Duration(milliseconds: 1000),
             curve: Curves.fastOutSlowIn);} );
 
       }else{
@@ -164,6 +168,8 @@ late  VoidCallback _listener;
     }catch(e){
       if (kDebugMode) {
         print(e);
+        update();
+       
       }
     }
 
@@ -183,11 +189,47 @@ late  VoidCallback _listener;
   }
 
 
+  
+  
+  qrDialog(){
+
+    Phoenix.rebirth(Get.context!);
+    Get.reset();
+   // Get.
+   //  Get.dialog(
+   //    Container(
+   //      child:
+   //      QrImage(data: "ali"),
+   //    )
+   //  );
+  }
+
+RxInt numOfElement = 0.obs;
+
+@override
+  // TODO: implement onStart
+  InternalFinalCallback<void> get onStart {
+  numOfElement.value = controller.src.length;
+  print("${controller.src.length}");
+  return super.onStart;}
 
 
 
+  @override
+  void onClose() {
+    // TODO: implement onClose
 
+    super.onClose();
+    controller.vcs.forEach((element) { element.dispose();});
 
+  }
 
-
+ late List<dynamic> vrc  = [];
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    vrc = controller.vcs;
+  }
 }
+

@@ -1,8 +1,9 @@
 
 
 import 'package:get/get.dart';
-import 'package:ion_station/controller.dart';
-import 'package:ion_station/splash_controller.dart';
+import '../splash/splash_api.dart';
+import '/home/home_controller.dart';
+import '/splash/splash_controller.dart';
 
 class HomeBinding implements Bindings {
   @override
@@ -15,6 +16,7 @@ class HomeBinding implements Bindings {
 class SplashBinding implements Bindings {
   @override
   void dependencies() {
+
     Get.lazyPut<SplashController>(() => SplashController());
 
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ion_station/splash_controller.dart';
+import '/splash/splash_controller.dart';
 
 
 

@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:ion_station/home.dart';
-import 'package:ion_station/splash_view.dart';
+import '/home/home_view.dart';
+import '/splash/splash_view.dart';
 
 import 'binding.dart';
+
 
 
 class AppRouter {
