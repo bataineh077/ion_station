@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: '>=2.18.2 <3.3.4'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -40,7 +40,6 @@ dependencies:
   carousel_slider: ^4.1.1
  # cached_network_image:
   pod_player: ^0.1.0
-  infinite_carousel: ^1.0.2
   qr_flutter: ^4.0.0
   socket_io_client: ^2.0.0
   flutter_phoenix:

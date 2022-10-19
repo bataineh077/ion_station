@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
-import 'package:infinite_carousel/infinite_carousel.dart';
 import '/splash/splash_controller.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -56,6 +55,7 @@ class HomeController extends GetxController {
             "position = ${vController.value.position} ;;; duration = ${vController.value.duration}");
 
 
+
         if (vController.value.isInitialized) {
           print("initialized");
           Duration duration = vController.value.duration;
@@ -63,7 +63,6 @@ class HomeController extends GetxController {
 
           if (duration.compareTo(position) != 1) {
 
-            vController.pause();
             _goNextItem();
             vController.removeListener(_listener);
 
@@ -72,11 +71,14 @@ class HomeController extends GetxController {
           }
 
         }
+
+        if(!vController.value.isPlaying){
+        vController.play();
+        }
       };
 
       ++videoControllersIndex;
 
-      vController.setVolume(0.0);
       vController.play();
       if(!vController.value.isPlaying){
 
