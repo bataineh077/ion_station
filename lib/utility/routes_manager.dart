@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '/home/home_view.dart';
 import '/splash/splash_view.dart';

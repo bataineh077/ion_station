@@ -15,7 +15,7 @@ class SplashView extends StatelessWidget {
           backgroundColor: Colors.white,
 
           body:  Center(
-            child: Icon(Icons.ac_unit),
+            child: Image(image: AssetImage("assets/images/icon_charging.png"),color: Colors.black,),
           ),
         );
 
