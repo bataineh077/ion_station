@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import 'home_controller.dart';
 
@@ -24,8 +26,10 @@ class Home extends StatelessWidget {
               } else {
                 return GestureDetector(
                   onTap: () {
-                    controller.qrDialog();
+                  //  controller.qrDialogName();
+                    controller. qrDialogWither();
                   },
+  //               child: Image.asset("/Users/bilalbataineh/Downloads/IMG_4288-2.jpg"),
                   child: Swiper(
                   //  physics: const NeverScrollableScrollPhysics(),
                     itemCount: controller.numOfElement.value,
@@ -42,6 +46,17 @@ class Home extends StatelessWidget {
                   ),
                 );
               }
-            }));
+            }),
+    bottomSheet: Container(height: 55,color: Colors.green,
+    child: Marquee(
+      blankSpace: 500.0,
+      pauseAfterRound: Duration(seconds: 1),
+      startPadding: 10.0,
+      accelerationDuration: Duration(seconds: 1),
+      accelerationCurve: Curves.linear,
+      decelerationDuration: Duration(milliseconds: 500),
+      decelerationCurve: Curves.easeOut,
+      text: 'There once was a boy who told this story about a boy: "',
+    ),),);
   }
 }

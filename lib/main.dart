@@ -1,3 +1,7 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
@@ -5,11 +9,17 @@ import '/utility/binding.dart';
 import '/utility/routes_manager.dart';
 
 
-void main() {
- // SplashApi().socketConnection();
+Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+
+
+
   runApp(const MyApp());
 }
+
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

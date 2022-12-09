@@ -1,6 +1,6 @@
 # ion_station
 
-A new Flutter project.
+A new Flutter web project.
 
 ## Getting Started
 

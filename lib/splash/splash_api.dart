@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SplashApi extends GetConnect{
+
+
 
 
   Future<List<dynamic>> getVideoList() async {
@@ -26,16 +27,7 @@ class SplashApi extends GetConnect{
 
   }
 
-   socketConnection() async {
-     IO.Socket socket = IO.io('ws://localhost:8080');
-     socket.onConnect((_) async{
 
-       print('connect');
-
-      // socket.emit('connection', 'test');
-
-     });
-  }
 
 
 }
