@@ -74,7 +74,7 @@ class HomeController extends GetxController {
             vController.removeListener(_listener);
 
           } else {
-            //    print("ali");
+          
           }
 
         }
